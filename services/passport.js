@@ -1,5 +1,5 @@
 const passport = require("passport");
-const FacebookStrategy = require("passport-facebook").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mongoose = require("mongoose");
 const keys = require("../config/keys");
 
@@ -16,21 +16,22 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use(
-	new FacebookStrategy(
+	new GoogleStrategy(
 		{
-			clientID: keys.facebookClientID,
-			clientSecret: keys.facebookClientSecret,
-			callbackURL: "https://577e8694.ngrok.io/auth/facebook/callback"
+			clientID: keys.googleClientID,
+			clientSecret: keys.googleClientSecret,
+			callbackURL: "/auth/google/callback",
+			proxy: true
 		},
 		async (accessToken, refreshToken, profile, done) => {
-			const existingUser = await User.findOne({ facebookId: profile.id });
+			const existingUser = await User.findOne({ googleId: profile.id });
 
 			if (existingUser) {
 				done(null, existingUser);
 				return;
 			}
 
-			const user = await new User({ facebookId: profile.id, displayName: profile.displayName }).save();
+			const user = await new User({ googleId: profile.id, displayName: profile.displayName }).save();
 			done(null, user);
 		}
 	)
