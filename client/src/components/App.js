@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import * as actions from "../actions";
 
 import Header from "./Header";
-import Dashboard from "./Dashboard";
+import Landing from "./Landing";
 const Garbage = () => <h2>Testing</h2>;
 
 class App extends Component {
@@ -17,7 +17,7 @@ class App extends Component {
       <BrowserRouter>
         <div className="container">
           <Header />
-          <Dashboard />
+          <Landing />
           <Route exact path="/surveys" component={Garbage} />
         </div>
       </BrowserRouter>
